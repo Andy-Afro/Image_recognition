@@ -8,6 +8,7 @@ from keras.utils import to_categorical
 import numpy as np
 import matplotlib.pyplot as plt
 from os import walk
+from playsound import playsound
 # Load data
 from keras.datasets import cifar10
 
@@ -74,38 +75,38 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
 
 # Add a layer with 2048 neurons (connected to previous layers)
-model.add(Dense(2048, activation='relu'))
+model.add(Dense(512, activation='relu'))
 
 # Add a dropout layer
 model.add(Dropout(0.5))
 
 # Add a layer with 1024 neurons (connected to previous layers)
-model.add(Dense(1024, activation='relu'))
+model.add(Dense(256, activation='relu'))
 
 # Add a another dropout layer
 model.add(Dropout(0.5))
 
 # Add a layer with 512 neurons
-model.add(Dense(512, activation='relu'))
-
-# Add a layer with 128 neurons
 model.add(Dense(128, activation='relu'))
 
-# Add a layer with 32 neurons
-model.add(Dense(32, activation='relu'))
+# Add a layer with 128 neurons
+model.add(Dense(64, activation='relu'))
+
+# # Add a layer with 32 neurons
+# model.add(Dense(32, activation='relu'))
 
 # Add a layer with 10 neurons b/c we have 10 different classifications
 model.add(Dense(10, activation='softmax'))
 
 # Compile the model
-model.compile(optimizer='adam', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model
-hist = model.fit(x_train, y_train_one_hot, batch_size=256, epochs=10, validation_split=0.2)
+hist = model.fit(x_train, y_train_one_hot, batch_size=128, epochs=100, validation_split=0.2)
 
-# # Save the model?
-# model.save("my_model")
-#
+# Save the model?
+model.save("my_model")
+
 # # Load the model?
 # model = keras.models.load_model("my_model")
 #
@@ -167,3 +168,5 @@ for i in range(len(IMAGES)):
 print("Test accuracy is", test_accuracy)
 for i in range(len(guesses)):
     print(classes[i], "prediction is", guesses[i], "-", classes[i] == guesses[i])
+
+playsound("sounds\\alarm.mp3")

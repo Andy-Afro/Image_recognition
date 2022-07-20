@@ -21,41 +21,45 @@ num_classes = 10
 train_labels = np_utils.to_categorical(train_labels, num_classes)
 test_labels = np_utils.to_categorical(test_labels, num_classes)
 
-# Building the model... that's a lot of layers...
-model = Sequential()
+# # Building the model... that's a lot of layers...
+# model = Sequential()
+#
+# model.add(layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 3)))
+# model.add(layers.BatchNormalization())
+# model.add(layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+# model.add(layers.Dropout(0.3))
+#
+# model.add(layers.Conv2D(64, (3, 3), padding='same', activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.Conv2D(64, (3, 3), padding='same', activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+# model.add(layers.Dropout(0.5))
+#
+# model.add(layers.Conv2D(128, (3, 3), padding='same', activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.Conv2D(128, (3, 3), padding='same', activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+# model.add(layers.Dropout(0.5))
+#
+# model.add(layers.Flatten())
+# model.add(layers.Dense(128, activation='relu'))
+# model.add(layers.BatchNormalization())
+# model.add(layers.Dropout(0.5))
+#
+# # Output layer
+# model.add(layers.Dense(num_classes, activation='softmax'))    # num_classes = 10
+#
+# model.compile(optimizer='adam', loss="categorical_crossentropy", metrics=['accuracy'])
+#
+# hist = model.fit(train_images, train_labels, batch_size=64, epochs=100, validation_data=(test_images, test_labels))
+#
+# model.save("example_model")
 
-model.add(layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 3)))
-model.add(layers.BatchNormalization())
-model.add(layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-model.add(layers.Dropout(0.3))
-
-model.add(layers.Conv2D(64, (3, 3), padding='same', activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.Conv2D(64, (3, 3), padding='same', activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-model.add(layers.Dropout(0.5))
-
-model.add(layers.Conv2D(128, (3, 3), padding='same', activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.Conv2D(128, (3, 3), padding='same', activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-model.add(layers.Dropout(0.5))
-
-model.add(layers.Flatten())
-model.add(layers.Dense(128, activation='relu'))
-model.add(layers.BatchNormalization())
-model.add(layers.Dropout(0.5))
-
-# Output layer
-model.add(layers.Dense(num_classes, activation='softmax'))    # num_classes = 10
-
-model.compile(optimizer='adam', loss="categorical_crossentropy", metrics=['accuracy'])
-
-hist = model.fit(train_images, train_labels, batch_size=64, epochs=100, validation_data=(test_images, test_labels))
+model = models.load_model("example_model")
 
 print("TESTING...")
 res = model.evaluate(test_images, test_labels)[1]
@@ -80,8 +84,6 @@ for k in range(len(IMAGES)):
                 idx[i] = idx[j]
                 idx[j] = temp
     guesses.append(class_names[idx[0]])
-
-model.save("example_model")
 
 print("Test accuracy is", res)
 for i in range(len(guesses)):
